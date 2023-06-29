@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "felt-upload"
+version = "0.1.0"
+description = "CLI tool to upload data to Felt"
+authors = ["Oleksii Vykaliuk <alekzvik@gmail.com>"]
+readme = "README.md"
+packages = [{include = "felt_upload"}]
+license = "MIT"
+repository = "https://github.com/alekzvik/felt_upload"
+
+[tool.poetry.scripts]
+felt-upload = "felt_upload.cli:app"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+requests = "^2.31.0"
+typer = {extras = ["all"], version = "^0.9.0"}
+requests-toolbelt = "^1.0.0"
+
+[tool.pytest]
+testpaths = "tests"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+black = "*"
+responses = "^0.23.1"
+mypy = "*"
+types-requests = "^2.31.0.1"
+typer-cli = {git = "ssh://git@github.com/Patarimi/typer-cli", rev = "a6530c9344920512733181809efc7446d672890f"}
+pytest = "*"
+
+[tool.mypy]
+files = "src"
+
+[[tool.mypy.overrides]]
+module = [
+    'requests_toolbelt.*',
+]
+ignore_missing_imports = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
