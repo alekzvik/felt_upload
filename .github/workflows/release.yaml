@@ -1,4 +1,4 @@
-name: Tests
+name: Publish and Release
 
 on:
   push:
@@ -40,11 +40,11 @@ jobs:
 
       - name: Set module version
         id: module
-        run: echo ::set-output name=version::$(poetry version --short)
+        run: echo "version=$(poetry version --short)" >> $GITHUB_OUTPUT
 
       - name: Publish to PyPI
         if: ${{github.ref_type}} == 'tag' && ${{github.ref_name}} == steps.module.outputs.version
-        run: poetry publish -r test-pypi
+        run: poetry publish -r test_pypi
         env:
           POETRY_REPOSITORIES_TEST_PYPI: https://test.pypi.org/legacy/
 
