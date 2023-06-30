@@ -1,6 +1,5 @@
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, List, Optional
+from typing import Any, Callable, List, Optional
 from urllib.parse import urljoin
 
 import requests
@@ -15,16 +14,21 @@ class UnauthorizedError(FeltAPIError):
     pass
 
 
-def drop_empty(dct):
+def drop_empty(dct: dict[Any, Any]) -> dict[Any, Any]:
     """Drop empty values from a dict."""
     return {key: value for key, value in dct.items() if value}
 
 
-@dataclass
 class Felt:
-    api_token: str
-    base_url: str = "https://felt.com/api/v1/"
-    session: requests.Session = requests.Session()
+    def __init__(
+        self,
+        api_token: str,
+        base_url: str = "https://felt.com/api/v1/",
+        session: Optional[requests.Session] = None,
+    ):
+        self.api_token = api_token
+        self.base_url = base_url
+        self.session = session or requests.Session()
 
     @property
     def _headers(self) -> dict[str, str]:
@@ -33,7 +37,7 @@ class Felt:
             "content-type": "application/json",
         }
 
-    def _request(self, method, url, **kwargs) -> dict:
+    def _request(self, method: str, url: str, **kwargs: Any) -> Any:
         resp = self.session.request(
             method=method,
             url=urljoin(self.base_url, url),
@@ -51,7 +55,7 @@ class Felt:
                 resp.raise_for_status()
         return resp.json()
 
-    def user(self) -> dict:
+    def user(self) -> dict[str, str]:
         """Make a /user request"""
         json_data = self._request("get", "user")
         return {
@@ -67,7 +71,7 @@ class Felt:
         zoom: Optional[float] = None,
         lat: Optional[float] = None,
         lon: Optional[float] = None,
-    ) -> dict:
+    ) -> dict[str, str]:
         """Create an empty map."""
         data = self._request(
             "post",
@@ -97,7 +101,7 @@ class Felt:
         fill_color: Optional[str] = None,
         stroke_color: Optional[str] = None,
         update_file_progress: Optional[Callable[[str, int, int], None]] = None,
-    ) -> dict:
+    ) -> dict[str, str]:
         """Create a layer and upload files."""
         data = self._request(
             "post",
@@ -118,7 +122,7 @@ class Felt:
 
         for path in files:
 
-            def monitor_callback(monitor):
+            def monitor_callback(monitor: MultipartEncoderMonitor) -> None:
                 if update_file_progress:
                     update_file_progress(path.name, monitor.bytes_read, monitor.len)
 
@@ -153,7 +157,7 @@ class Felt:
         layer_url: str,
         *,
         name: Optional[str] = None,
-    ) -> dict:
+    ) -> dict[str, str]:
         """Import layer from a url."""
         resp = self._request(
             "post",
@@ -165,5 +169,5 @@ class Felt:
                 }
             ),
         )
-        
-        return {"id": resp['data']['id']}
+
+        return {"id": resp["data"]["id"]}

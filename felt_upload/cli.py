@@ -177,7 +177,7 @@ def layer(
             task_id = download_progress.add_task(file.name)
             task_map[file.name] = task_id
 
-        def update_file_progress(filename, completed, total):
+        def update_file_progress(filename: str, completed: int, total: int) -> None:
             download_progress.update(
                 task_map[filename], completed=completed, total=total
             )
