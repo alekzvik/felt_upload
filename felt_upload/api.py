@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 from urllib.parse import urljoin
 
 import requests
@@ -14,7 +14,7 @@ class UnauthorizedError(FeltAPIError):
     pass
 
 
-def drop_empty(dct: dict[Any, Any]) -> dict[Any, Any]:
+def drop_empty(dct: Dict[Any, Any]) -> Dict[Any, Any]:
     """Drop empty values from a dict."""
     return {key: value for key, value in dct.items() if value}
 
@@ -31,7 +31,7 @@ class Felt:
         self.session = session or requests.Session()
 
     @property
-    def _headers(self) -> dict[str, str]:
+    def _headers(self) -> Dict[str, str]:
         return {
             "authorization": f"Bearer {self.api_token}",
             "content-type": "application/json",
@@ -54,7 +54,7 @@ class Felt:
             resp.raise_for_status()
         return resp.json()
 
-    def user(self) -> dict[str, str]:
+    def user(self) -> Dict[str, str]:
         """Make a /user request"""
         json_data = self._request("get", "user")
         return {
@@ -70,7 +70,7 @@ class Felt:
         zoom: Optional[float] = None,
         lat: Optional[float] = None,
         lon: Optional[float] = None,
-    ) -> dict[str, str]:
+    ) -> Dict[str, str]:
         """Create an empty map."""
         data = self._request(
             "post",
@@ -100,7 +100,7 @@ class Felt:
         fill_color: Optional[str] = None,
         stroke_color: Optional[str] = None,
         update_file_progress: Optional[Callable[[str, int, int], None]] = None,
-    ) -> dict[str, str]:
+    ) -> Dict[str, str]:
         """Create a layer and upload files."""
         data = self._request(
             "post",
@@ -156,7 +156,7 @@ class Felt:
         layer_url: str,
         *,
         name: Optional[str] = None,
-    ) -> dict[str, str]:
+    ) -> Dict[str, str]:
         """Import layer from a url."""
         resp = self._request(
             "post",
