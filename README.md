@@ -1,4 +1,10 @@
 # felt-upload
+![PyPI](https://img.shields.io/pypi/v/felt_upload?color=blue)
+[![Tests](https://github.com/alekzvik/felt_upload/actions/workflows/main.yaml/badge.svg)](https://github.com/alekzvik/felt_upload/actions/workflows/main.yaml)
+[![codecov](https://codecov.io/gh/alekzvik/felt_upload/branch/main/graph/badge.svg?token=H8L6FTLGCC)](https://codecov.io/gh/alekzvik/felt_upload)
+![PyPI - License](https://img.shields.io/pypi/l/felt_upload)
+</p>
+
 
 ## What
 [Felt](http://felt.com) is "the best way to work with maps, together".
