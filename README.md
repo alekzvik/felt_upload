@@ -1,4 +1,4 @@
-# `felt-upload`
+# felt-upload
 
 ## What
 [Felt](http://felt.com) is "the best way to work with maps, together".
@@ -60,4 +60,4 @@ felt-upload layer-import <map-id> --layer-name "My layer from url" http://exampl
 
 ### Existing map
 Want to add layer to already existing map?
-Grab map's `id` from the url as [explained here](), e.g. for https<no-link>://felt.com/map/Untitled-Map-**Cwc6EdieQdyXgyPMgDmYBC**?loc=37.807,-122.271,14z you need a part after the map name and before the `?`: `Cwc6EdieQdyXgyPMgDmYBC` and you can use it.
+Grab map `id` from the url as [explained here](), e.g. for https://felt.com/map/Untitled-Map-Cwc6EdieQdyXgyPMgDmYBC?loc=37.807,-122.271,14z you need a part after the map name and before the `?`: `Cwc6EdieQdyXgyPMgDmYBC`.
