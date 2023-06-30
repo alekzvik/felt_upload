@@ -51,7 +51,7 @@ jobs:
         run: poetry lock --check
 
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --sync
 
       - name: Test
         run: |

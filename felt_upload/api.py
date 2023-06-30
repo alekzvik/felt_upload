@@ -48,11 +48,10 @@ class Felt:
             **kwargs,
         )
 
-        match resp.status_code:
-            case 401:
-                raise UnauthorizedError
-            case _:
-                resp.raise_for_status()
+        if resp.status_code == 401:
+            raise UnauthorizedError
+        else:
+            resp.raise_for_status()
         return resp.json()
 
     def user(self) -> dict[str, str]:
