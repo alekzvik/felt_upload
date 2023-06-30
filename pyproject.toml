@@ -26,6 +26,7 @@ types-requests = "^2.31.0.1"
 typer-cli = {git = "ssh://git@github.com/Patarimi/typer-cli", rev = "a6530c9344920512733181809efc7446d672890f"}
 pytest = "*"
 pre-commit = "*"
+pytest-cov = "^4.1.0"
 
 [tool.pytest]
 testpaths = "tests"

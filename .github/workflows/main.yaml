@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [Ubuntu, macOS, Windows]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12-pre"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
         include:
           - os: Ubuntu
             image: ubuntu-22.04
@@ -72,4 +72,8 @@ jobs:
 
       - name: Test
         run: |
-          poetry run pytest
+          poetry run pytest --cov-report term-missing --cov-report xml --cov responses
+
+      - name: Code Coverage Report
+        if: success()
+        uses: codecov/codecov-action@v3
