@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "*.*.*"
+    branches:
+      - main
 
 jobs:
   publish:
@@ -45,3 +47,9 @@ jobs:
         run: poetry publish -r test-pypi
         env:
           POETRY_REPOSITORIES_TEST_PYPI: https://test.pypi.org/legacy/
+
+      - name: Github release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/
+          prerelease: ${{github.ref_type}} != 'tag'
