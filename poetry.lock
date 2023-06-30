@@ -788,7 +788,7 @@ typer = ">=0.4.0,<=0.9.0"
 
 [package.source]
 type = "git"
-url = "ssh://git@github.com/Patarimi/typer-cli"
+url = "https://github.com/Patarimi/typer-cli"
 reference = "a6530c9344920512733181809efc7446d672890f"
 resolved_reference = "a6530c9344920512733181809efc7446d672890f"
 
@@ -879,4 +879,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8"
-content-hash = "4389eaea824bd3848b0168552ca914e127631873f3d946e2a712a54576c65903"
+content-hash = "65b45e503f235bcd2ccfad9e381524f93db230d821a1363f5a6b77ae779fc621"
