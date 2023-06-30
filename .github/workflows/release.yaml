@@ -56,4 +56,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/
-          prerelease: github.ref_type != 'tag'
+          prerelease: ${{github.ref_type != 'tag'}}
