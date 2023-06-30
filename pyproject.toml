@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "felt-upload"
-version = "0.1.1"
+version = "0.1.2"
 description = "CLI tool to upload data to Felt"
 authors = ["Oleksii Vykaliuk <alekzvik@gmail.com>"]
 readme = "README.md"
