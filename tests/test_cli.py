@@ -24,8 +24,8 @@ def test_no_token_param(command):
     result = runner.invoke(app, [command], env={"FELT_TOKEN": None})
 
     assert result.exit_code == 2
-    assert "Missing option" in result.stdout
-    assert "--token" in result.stdout
+    assert "Missing option" in result.stdout, result.stdout
+    assert "--token" in result.stdout, result.stdout
 
 
 @pytest.mark.parametrize("command", ["user", "map"])
