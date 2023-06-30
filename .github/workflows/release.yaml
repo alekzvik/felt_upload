@@ -45,7 +45,7 @@ jobs:
         run: echo "version=$(poetry version --short)" >> $GITHUB_OUTPUT
 
       - name: Publish to PyPI
-        if: ${{github.ref_type}} == 'tag' && ${{github.ref_name}} == steps.module.outputs.version
+        if: github.ref_type == 'tag' && github.ref_name == steps.module.outputs.version
         run: |
           poetry config repo.test_pypi $POETRY_REPOSITORIES_TEST_PYPI
           poetry publish -r test_pypi
@@ -56,4 +56,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/
-          prerelease: ${{github.ref_type}} != 'tag'
+          prerelease: github.ref_type != 'tag'
