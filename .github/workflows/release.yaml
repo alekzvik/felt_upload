@@ -4,10 +4,6 @@ on:
   push:
     tags:
       - "*.*.*"
-    branches:
-      - main
-  # temporary for test purposes
-  pull_request:
 
 jobs:
   publish:
@@ -53,7 +49,7 @@ jobs:
           POETRY_REPOSITORIES_TEST_PYPI: https://test.pypi.org/legacy/
 
       - name: Github release
+        if: github.ref_type == 'tag' && github.ref_name == steps.module.outputs.version
         uses: softprops/action-gh-release@v1
         with:
           files: dist/
-          prerelease: ${{github.ref_type != 'tag'}}
