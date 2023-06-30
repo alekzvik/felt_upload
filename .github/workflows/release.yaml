@@ -6,8 +6,8 @@ on:
       - "*.*.*"
 
 jobs:
-  publish:
-    name:
+  build:
+    name: Build package
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,9 +24,6 @@ jobs:
           python-version: '3.11'
           cache: poetry
 
-      - name: Check lock file
-        run: poetry lock --check
-
       - name: Install dependencies
         run: poetry install --sync
 
@@ -40,16 +37,59 @@ jobs:
         id: module
         run: echo "version=$(poetry version --short)" >> $GITHUB_OUTPUT
 
-      - name: Publish to PyPI
-        if: github.ref_type == 'tag' && github.ref_name == steps.module.outputs.version
-        run: |
-          poetry config repo.test_pypi $POETRY_REPOSITORIES_TEST_PYPI
-          poetry publish -r test_pypi
-        env:
-          POETRY_REPOSITORIES_TEST_PYPI: https://test.pypi.org/legacy/
+      - name: Fail if poetry version does not match tag
+        if: github.ref_type != 'tag' || github.ref_name != steps.module.outputs.version
+        run: exit 1
 
-      - name: Github release
-        if: github.ref_type == 'tag' && github.ref_name == steps.module.outputs.version
+      - name: Upload dist as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-package
+          path: dist/
+
+  pypi-publish:
+    name: Upload release to PyPI
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment:
+      # name: pypi
+      # url: https://pypi.org/p/felt_upload
+      name: testpypi
+      url: https://test.pypi.org/p/felt-upload/
+    permissions:
+      id-token: write
+    steps:
+    - name: Download dist as artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: built-package
+        path: dist/
+
+    # - name: Publish package distributions to PyPI
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+
+    - name: Publish package distributions to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+
+  gh-release:
+    name: Github release
+    needs: [build, pypi-publish]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download dist as artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: built-package
+          path: dist/
+
+      - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/
+          files: dist/*
