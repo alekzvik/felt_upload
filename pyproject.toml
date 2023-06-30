@@ -17,9 +17,6 @@ requests = "^2.31.0"
 typer = {extras = ["all"], version = "^0.9.0"}
 requests-toolbelt = "^1.0.0"
 
-[tool.pytest]
-testpaths = "tests"
-
 [tool.poetry.group.dev.dependencies]
 ruff = "*"
 black = "*"
@@ -28,6 +25,16 @@ mypy = "*"
 types-requests = "^2.31.0.1"
 typer-cli = {git = "ssh://git@github.com/Patarimi/typer-cli", rev = "a6530c9344920512733181809efc7446d672890f"}
 pytest = "*"
+pre-commit = "*"
+
+[tool.pytest]
+testpaths = "tests"
+
+[tool.ruff]
+ignore = [
+    # Enforced by black
+    "E501",
+]
 
 [tool.mypy]
 files = "src"
