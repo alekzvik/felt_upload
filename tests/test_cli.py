@@ -2,11 +2,10 @@ import pytest
 from typer.testing import CliRunner
 
 from felt_upload.cli import app
-from felt_upload.api import Felt
 from responses import matchers
 
 runner = CliRunner(env={"FELT_TOKEN": "123"})
-URL = Felt.base_url
+URL = "https://felt.com/api/v1/"
 
 
 @pytest.fixture
