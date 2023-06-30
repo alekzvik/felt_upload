@@ -46,7 +46,9 @@ jobs:
 
       - name: Publish to PyPI
         if: ${{github.ref_type}} == 'tag' && ${{github.ref_name}} == steps.module.outputs.version
-        run: poetry publish -r test_pypi
+        run: |
+          poetry config repo.test_pypi $POETRY_REPOSITORIES_TEST_PYPI
+          poetry publish -r test_pypi
         env:
           POETRY_REPOSITORIES_TEST_PYPI: https://test.pypi.org/legacy/
 
