@@ -16,10 +16,8 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        # os: [Ubuntu, macOS, Windows]
-        # python-version: ["3.8", "3.9", "3.10", "3.11"]
-        os: [Ubuntu]
-        python-version: ["3.11"]
+        os: [Ubuntu, macOS, Windows]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
         include:
           - os: Ubuntu
             image: ubuntu-22.04
