@@ -2,11 +2,10 @@ import pytest
 from typer.testing import CliRunner
 
 from felt_upload.cli import app
-from felt_upload.api import Felt
 from responses import matchers
 
 runner = CliRunner(env={"FELT_TOKEN": "123"})
-URL = Felt.base_url
+URL = "https://felt.com/api/v1/"
 
 
 @pytest.fixture
@@ -25,14 +24,16 @@ def test_no_token_param(command):
     result = runner.invoke(app, [command], env={"FELT_TOKEN": None})
 
     assert result.exit_code == 2
-    assert "Missing option '--token'" in result.stdout, result.stdout
+    assert "Missing option" in result.output, result.output
+    assert "token" in result.output, result.output
 
 
 @pytest.mark.parametrize("command", ["user", "map"])
 def test_token_param_option(command):
     result = runner.invoke(app, [command, "--token", "123"], env={"FELT_TOKEN": None})
 
-    assert "Missing option '--token'" not in result.stdout
+    assert "Missing option" not in result.output
+    assert "token" not in result.output
 
 
 def test_auth_headers(mocked_responses):
@@ -57,7 +58,7 @@ def test_user(mocked_responses):
     )
     result = runner.invoke(app, ["user"])
     assert result.exit_code == 0
-    assert "Alice <alice@example.com>" in result.stdout
+    assert "Alice <alice@example.com>" in result.output
 
 
 def test_user_unauthorized(mocked_responses):
@@ -67,7 +68,7 @@ def test_user_unauthorized(mocked_responses):
     )
     result = runner.invoke(app, ["user"])
     assert result.exit_code == 2
-    assert "401 Unauthorized" in result.stdout
+    assert "401 Unauthorized" in result.output
 
 
 def test_only_map(mocked_responses):
@@ -90,8 +91,8 @@ def test_only_map(mocked_responses):
 
     result = runner.invoke(app, ["map"])
     assert result.exit_code == 0
-    assert map_id in result.stdout
-    assert map_url in result.stdout
+    assert map_id in result.output
+    assert map_url in result.output
 
 
 def test_create_layer(mocked_responses, file_creator):
@@ -145,8 +146,8 @@ def test_create_layer(mocked_responses, file_creator):
         catch_exceptions=False,
     )
 
-    assert result.exit_code == 0, result.stdout
-    assert layer_id in result.stdout
+    assert result.exit_code == 0, result.output
+    assert layer_id in result.output
 
 
 def test_layer_import(mocked_responses):
@@ -172,4 +173,4 @@ def test_layer_import(mocked_responses):
     result = runner.invoke(app, ["layer-import", map_id, "--name", "Layer name", *urls])
 
     assert result.exit_code == 0
-    assert layer_id in result.stdout
+    assert layer_id in result.output
