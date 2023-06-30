@@ -72,7 +72,7 @@ jobs:
 
       - name: Test
         run: |
-          poetry run pytest --cov-report term-missing --cov-report xml --cov responses
+          poetry run pytest --cov-report term-missing --cov-report xml --cov felt_upload
 
       - name: Code Coverage Report
         if: success()

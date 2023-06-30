@@ -24,14 +24,16 @@ def test_no_token_param(command):
     result = runner.invoke(app, [command], env={"FELT_TOKEN": None})
 
     assert result.exit_code == 2
-    assert "Missing option '--token'" in result.stdout, result.stdout
+    assert "Missing option" in result.stdout
+    assert "--token" in result.stdout
 
 
 @pytest.mark.parametrize("command", ["user", "map"])
 def test_token_param_option(command):
     result = runner.invoke(app, [command, "--token", "123"], env={"FELT_TOKEN": None})
 
-    assert "Missing option '--token'" not in result.stdout
+    assert "Missing option" not in result.stdout
+    assert "--token" not in result.stdout
 
 
 def test_auth_headers(mocked_responses):
