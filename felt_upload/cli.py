@@ -20,7 +20,7 @@ from typing_extensions import Annotated
 
 from felt_upload.api import Felt, UnauthorizedError
 
-app = typer.Typer(no_args_is_help=True)
+app = typer.Typer(name="felt-upload", no_args_is_help=True)
 
 
 class Basemap(str, Enum):
@@ -96,13 +96,6 @@ def user(
 def map(
     ctx: typer.Context,
     token: Annotated[str, typer.Option(envvar="FELT_TOKEN")],
-    title: Optional[str] = None,
-    layer_name: Optional[str] = None,
-    basemap: Optional[Basemap] = None,
-    zoom: Optional[float] = None,
-    lat: Optional[float] = None,
-    lon: Optional[float] = None,
-    layer_url: Optional[List[str]] = None,  # TODO: consider yarl to validate
     files: Annotated[
         Optional[List[Path]],
         typer.Argument(
@@ -114,6 +107,13 @@ def map(
             readable=True,
         ),
     ] = None,
+    title: Optional[str] = None,
+    layer_name: Optional[str] = None,
+    basemap: Optional[Basemap] = None,
+    zoom: Optional[float] = None,
+    lat: Optional[float] = None,
+    lon: Optional[float] = None,
+    layer_url: Optional[List[str]] = None,  # TODO: consider yarl to validate
     silent: Annotated[
         bool, typer.Option("--silent", help="Write only necessary output")
     ] = False,

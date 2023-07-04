@@ -1,0 +1,10 @@
+site_name: "felt-upload"
+theme: material
+nav:
+    - index.md
+    - cli.md
+
+markdown_extensions:
+    - mkdocs-typer
+    - markdown_include.include:
+        base_path: .
