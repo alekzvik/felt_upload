@@ -75,7 +75,7 @@ jobs:
 
   gh-release:
     name: Github release
-    needs: [build, pypi-publish]
+    needs: [pypi-publish]
     permissions:
       contents: write
     runs-on: ubuntu-latest
