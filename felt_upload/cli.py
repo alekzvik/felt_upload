@@ -1,7 +1,8 @@
+from collections.abc import Generator
 from contextlib import contextmanager
 from enum import Enum
 from pathlib import Path
-from typing import Generator, List, Optional
+from typing import Annotated
 
 import requests
 import typer
@@ -16,7 +17,6 @@ from rich.progress import (
     TextColumn,
     TimeRemainingColumn,
 )
-from typing_extensions import Annotated
 
 from felt_upload.api import Felt, UnauthorizedError
 
@@ -97,7 +97,7 @@ def map(
     ctx: typer.Context,
     token: Annotated[str, typer.Option(envvar="FELT_TOKEN")],
     files: Annotated[
-        Optional[List[Path]],
+        list[Path] | None,
         typer.Argument(
             ...,
             exists=True,
@@ -107,13 +107,13 @@ def map(
             readable=True,
         ),
     ] = None,
-    title: Optional[str] = None,
-    layer_name: Optional[str] = None,
-    basemap: Optional[Basemap] = None,
-    zoom: Optional[float] = None,
-    lat: Optional[float] = None,
-    lon: Optional[float] = None,
-    layer_url: Optional[List[str]] = None,  # TODO: consider yarl to validate
+    title: str | None = None,
+    layer_name: str | None = None,
+    basemap: Basemap | None = None,
+    zoom: float | None = None,
+    lat: float | None = None,
+    lon: float | None = None,
+    layer_url: list[str] | None = None,  # TODO: consider yarl to validate
     silent: Annotated[
         bool, typer.Option("--silent", help="Write only necessary output")
     ] = False,
@@ -153,7 +153,7 @@ def layer(
     token: Annotated[str, typer.Option(envvar="FELT_TOKEN")],
     map_id: str,
     files: Annotated[
-        List[Path],
+        list[Path],
         typer.Argument(
             ...,
             exists=True,
@@ -163,7 +163,7 @@ def layer(
             readable=True,
         ),
     ],
-    name: Optional[str] = None,
+    name: str | None = None,
     silent: Annotated[
         bool, typer.Option("--silent", help="Write only necessary output")
     ] = False,
@@ -198,8 +198,8 @@ def layer_import(
     ctx: typer.Context,
     token: Annotated[str, typer.Option(envvar="FELT_TOKEN")],
     map_id: str,
-    layer_urls: List[str],
-    name: Optional[str] = None,
+    layer_urls: list[str],
+    name: str | None = None,
     silent: Annotated[
         bool, typer.Option("--silent", help="Write only necessary output")
     ] = False,
