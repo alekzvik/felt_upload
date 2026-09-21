@@ -1,5 +1,6 @@
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 from urllib.parse import urljoin
 
 import requests
@@ -14,7 +15,7 @@ class UnauthorizedError(FeltAPIError):
     pass
 
 
-def drop_empty(dct: Dict[Any, Any]) -> Dict[Any, Any]:
+def drop_empty(dct: dict[Any, Any]) -> dict[Any, Any]:
     """Drop empty values from a dict."""
     return {key: value for key, value in dct.items() if value}
 
@@ -24,14 +25,14 @@ class Felt:
         self,
         api_token: str,
         base_url: str = "https://felt.com/api/v1/",
-        session: Optional[requests.Session] = None,
+        session: requests.Session | None = None,
     ):
         self.api_token = api_token
         self.base_url = base_url
         self.session = session or requests.Session()
 
     @property
-    def _headers(self) -> Dict[str, str]:
+    def _headers(self) -> dict[str, str]:
         return {
             "authorization": f"Bearer {self.api_token}",
             "content-type": "application/json",
@@ -54,7 +55,7 @@ class Felt:
             resp.raise_for_status()
         return resp.json()
 
-    def user(self) -> Dict[str, str]:
+    def user(self) -> dict[str, str]:
         """Make a /user request"""
         json_data = self._request("get", "user")
         return {
@@ -64,13 +65,13 @@ class Felt:
 
     def create_map(
         self,
-        title: Optional[str] = None,
+        title: str | None = None,
         *,
-        basemap: Optional[str] = None,
-        zoom: Optional[float] = None,
-        lat: Optional[float] = None,
-        lon: Optional[float] = None,
-    ) -> Dict[str, str]:
+        basemap: str | None = None,
+        zoom: float | None = None,
+        lat: float | None = None,
+        lon: float | None = None,
+    ) -> dict[str, str]:
         """Create an empty map."""
         data = self._request(
             "post",
@@ -94,13 +95,13 @@ class Felt:
     def create_layer(
         self,
         map_id: str,
-        files: List[Path],
+        files: list[Path],
         *,
-        name: Optional[str] = None,
-        fill_color: Optional[str] = None,
-        stroke_color: Optional[str] = None,
-        update_file_progress: Optional[Callable[[str, int, int], None]] = None,
-    ) -> Dict[str, str]:
+        name: str | None = None,
+        fill_color: str | None = None,
+        stroke_color: str | None = None,
+        update_file_progress: Callable[[str, int, int], None] | None = None,
+    ) -> dict[str, str]:
         """Create a layer and upload files."""
         data = self._request(
             "post",
@@ -155,8 +156,8 @@ class Felt:
         map_id: str,
         layer_url: str,
         *,
-        name: Optional[str] = None,
-    ) -> Dict[str, str]:
+        name: str | None = None,
+    ) -> dict[str, str]:
         """Import layer from a url."""
         resp = self._request(
             "post",
